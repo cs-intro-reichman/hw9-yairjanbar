@@ -147,6 +147,9 @@ public class LinkedList {
 			this.first = newNode;
 		}
 		this.size++;
+		if (this.size == 1) {
+			this.last = newNode;
+		}
 	}
 
 	/**
@@ -198,8 +201,13 @@ public class LinkedList {
 	 */
 	public void remove(Node node) {
 		//// Write your code here
+		if(this.first==null) {
+			return;
+		}
 		if(this.first.equals(node)) {
 			this.first = this.first.next;
+			this.size--;
+			return;
 		}
 		Node beforeNode = this.first;
 		Node currentNode = this.first.next;
@@ -207,7 +215,7 @@ public class LinkedList {
 			if(currentNode.equals(node)){
 				beforeNode.next = currentNode.next;
 				this.size--;
-				break;
+				return;
 			}
 			else {
 				beforeNode=currentNode;
@@ -229,6 +237,9 @@ public class LinkedList {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
+		if (this.first == null) {
+			return;
+		}
 		if(index==0) {
 			this.first = this.first.next;
 			this.size--;
@@ -237,6 +248,9 @@ public class LinkedList {
 		Node currentNode = this.first;
 		for (int i=0;i<index-1;i++) {
 			currentNode=currentNode.next;
+		}
+		if (currentNode.next == null) {
+			return;
 		}
 		currentNode.next=currentNode.next.next;
 		this.size--;
