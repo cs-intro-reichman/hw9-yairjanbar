@@ -55,7 +55,11 @@ public class LinkedList {
 					"index must be between 0 and size");
 		}
 		//// Replace the following statement with your code
-		return null;
+		Node currentNode = this.first;
+		for (int i=0;i<index;i++) {
+			currentNode = currentNode.next;
+		}
+		return currentNode;
 	}
 	
 	/**
@@ -79,6 +83,30 @@ public class LinkedList {
 	 */
 	public void add(int index, MemoryBlock block) {
 		//// Write your code here
+		if (index < 0 || index > size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		Node newNode = new Node(block);
+		if (index==0) {
+			newNode.next = this.first;
+			this.first = newNode; 
+			if (this.size==0) newNode.next = null;
+		}
+		Node currentNode = this.first;
+		if (index==this.size) {
+			if(this.last!=null) {
+				this.last.next = newNode;
+			}
+			this.last = newNode;
+		} else {
+			for (int i=0;i<index-1;i++) {
+				currentNode = currentNode.next;
+			}
+			newNode.next = currentNode.next;
+			currentNode.next = newNode;
+		}
+		this.size++;
 	}
 
 	/**
@@ -90,6 +118,14 @@ public class LinkedList {
 	 */
 	public void addLast(MemoryBlock block) {
 		//// Write your code here
+		Node newNode  = new Node(block);
+		if(this.size==0) {
+			this.first = newNode;
+		} else  {
+				this.last.next=newNode; 
+		}
+		this.last=newNode;;
+		this.size++;
 	}
 	
 	/**
@@ -101,6 +137,16 @@ public class LinkedList {
 	 */
 	public void addFirst(MemoryBlock block) {
 		//// Write your code here
+		Node newNode  = new Node(block);
+		if(this.size==0) {
+			this.first = newNode; 
+			this.last = newNode;
+		}
+		else {
+			newNode.next = this.first;
+			this.first = newNode;
+		}
+		this.size++;
 	}
 
 	/**
@@ -114,7 +160,15 @@ public class LinkedList {
 	 */
 	public MemoryBlock getBlock(int index) {
 		//// Replace the following statement with your code
-		return null;
+		if (index < 0 || index >= size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		Node currentNode = this.first;
+		for (int i=0;i<index;i++) {
+			currentNode = currentNode.next;
+		}
+		return currentNode.block;
 	}	
 
 	/**
@@ -126,6 +180,13 @@ public class LinkedList {
 	 */
 	public int indexOf(MemoryBlock block) {
 		//// Replace the following statement with your code
+		Node currentNode = this.first;
+		for (int i=0; i<this.size;i++) {
+			if(currentNode.block.equals(block)){
+				return i;
+			}
+			else currentNode=currentNode.next;
+		}
 		return -1;
 	}
 
@@ -137,6 +198,22 @@ public class LinkedList {
 	 */
 	public void remove(Node node) {
 		//// Write your code here
+		if(this.first.equals(node)) {
+			this.first = this.first.next;
+		}
+		Node beforeNode = this.first;
+		Node currentNode = this.first.next;
+		while (currentNode!=null) {
+			if(currentNode.equals(node)){
+				beforeNode.next = currentNode.next;
+				this.size--;
+				break;
+			}
+			else {
+				beforeNode=currentNode;
+				currentNode=currentNode.next;
+			}
+		}
 	}
 
 	/**
@@ -148,6 +225,21 @@ public class LinkedList {
 	 */
 	public void remove(int index) {
 		//// Write your code here
+		if (index < 0 || index >= size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		if(index==0) {
+			this.first = this.first.next;
+			this.size--;
+			return;
+		}
+		Node currentNode = this.first;
+		for (int i=0;i<index-1;i++) {
+			currentNode=currentNode.next;
+		}
+		currentNode.next=currentNode.next.next;
+		this.size--;
 	}
 
 	/**
@@ -159,6 +251,19 @@ public class LinkedList {
 	 */
 	public void remove(MemoryBlock block) {
 		//// Write your code here
+		Node beforeNode = this.first;
+		Node currentNode = this.first.next;
+		for (int i=0; i<this.size;i++) {
+			if(currentNode.block.equals(block)){
+				beforeNode.next=currentNode.next;
+				this.size--;
+				break;
+			}
+			else {
+				beforeNode = currentNode;
+				currentNode=currentNode.next;
+			}
+		}
 	}	
 
 	/**
@@ -173,6 +278,16 @@ public class LinkedList {
 	 */
 	public String toString() {
 		//// Replace the following statement with your code
-		return "";
+		String s1 = "{";
+		Node currentNode = this.first;
+		for(int i =0;i<this.size-1;i++) {
+			s1 = s1 + currentNode.block + ",";
+			currentNode = currentNode.next;
+		}
+		if (currentNode != null) { 
+			s1 = s1 + currentNode.block;
+		}
+		s1 = s1 + "}";
+		return s1;
 	}
 }
