@@ -208,24 +208,31 @@ public class LinkedList {
 	public void remove(Node node) {
 		//// Write your code here
 		if(this.first==null) {
-			return;
+			throw new IllegalArgumentException(" NullPointerException!");
 		}
 		if(this.first.equals(node)) {
 			this.first = this.first.next;
 			this.size--;
-			return;
-		}
-		Node beforeNode = this.first;
-		Node currentNode = this.first.next;
-		while (currentNode!=null) {
-			if(currentNode.equals(node)){
-				beforeNode.next = currentNode.next;
-				this.size--;
-				return;
+			if (this.first==null) {
+				this.last=null;
 			}
-			else {
-				beforeNode=currentNode;
-				currentNode=currentNode.next;
+		}
+		else {
+			Node beforeNode = this.first;
+			Node currentNode = this.first.next;
+			while (currentNode!=null) {
+				if(currentNode.equals(node)){
+					beforeNode.next = currentNode.next;
+					this.size--;
+					if (currentNode == this.last) {
+						this.last = beforeNode;
+					}
+					break;
+				}
+				else {
+					beforeNode=currentNode;
+					currentNode=currentNode.next;
+				}
 			}
 		}
 	}
@@ -271,20 +278,32 @@ public class LinkedList {
 	 */
 	public void remove(MemoryBlock block) {
 		//// Write your code here
-		Node beforeNode = this.first;
-		Node currentNode = this.first.next;
-		for (int i=0; i<this.size;i++) {
-			if(currentNode.block.equals(block)){
-				beforeNode.next=currentNode.next;
-				this.size--;
-				break;
-			}
-			else {
-				beforeNode = currentNode;
-				currentNode=currentNode.next;
+		if(this.first==null) {
+			throw new IllegalArgumentException(" IllegalArgumentException: index must be between 0 and size");
+		}
+		if (this.first.block.equals(block)) {
+			this.first = this.first.next;
+			this.size--;
+			if (this.first == null) {
+				this.last = null;
 			}
 		}
-	}	
+		else {
+			Node beforeNode = this.first;
+			Node currentNode = this.first.next;
+			while (currentNode!=null)
+				if(currentNode.block.equals(block)){
+					beforeNode.next=currentNode.next;
+					this.size--;
+					if (currentNode == this.last) {
+						this.last = beforeNode;
+					}
+					break;
+				}
+				beforeNode = currentNode;
+				currentNode=currentNode.next;
+				}
+			}	
 
 	/**
 	 * Returns an iterator over this list, starting with the first element.
