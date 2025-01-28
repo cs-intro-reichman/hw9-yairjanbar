@@ -289,21 +289,22 @@ public class LinkedList {
 			}
 		}
 		else {
-			Node beforeNode = this.first;
-			Node currentNode = this.first.next;
-			while (currentNode!=null)
-				if(currentNode.block.equals(block)){
-					beforeNode.next=currentNode.next;
-					this.size--;
-					if (currentNode == this.last) {
-						this.last = beforeNode;
-					}
-					break;
-				}
+			
+		}
+		Node beforeNode = this.first;
+		Node currentNode = this.first.next;
+		for (int i=0; i<this.size;i++) {
+			if(currentNode.block.equals(block)){
+				beforeNode.next=currentNode.next;
+				this.size--;
+				break;
+			}
+			else {
 				beforeNode = currentNode;
 				currentNode=currentNode.next;
-				}
-			}	
+			}
+		}
+	}	
 
 	/**
 	 * Returns an iterator over this list, starting with the first element.
@@ -317,12 +318,16 @@ public class LinkedList {
 	 */
 	public String toString() {
 		//// Replace the following statement with your code
-		String s = "";  
-   		Node current = first;  
-    	while (current != null) {  
-        	s = s + current.block + " ";  
-        	current = current.next;  
-    	}  
-    	return s;
+		String s1 = "{";
+		Node currentNode = this.first;
+		for(int i =0;i<this.size-1;i++) {
+			s1 = s1 + currentNode.block + ",";
+			currentNode = currentNode.next;
+		}
+		if (currentNode != null) { 
+			s1 = s1 + currentNode.block;
+		}
+		s1 = s1 + "}";
+		return s1;
 	}
 }
