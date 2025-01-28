@@ -91,20 +91,26 @@ public class LinkedList {
 		if (index==0) {
 			newNode.next = this.first;
 			this.first = newNode; 
-			if (this.size==0) newNode.next = null;
+			if (this.size==0) {
+				newNode.next = null;
+			}
 		}
-		Node currentNode = this.first;
 		if (index==this.size) {
 			if(this.last!=null) {
 				this.last.next = newNode;
 			}
 			this.last = newNode;
-		} else {
+		}
+		else {
+			Node currentNode = this.first;
 			for (int i=0;i<index-1;i++) {
 				currentNode = currentNode.next;
 			}
 			newNode.next = currentNode.next;
 			currentNode.next = newNode;
+			if (index == this.size) {
+				this.last = newNode;
+			}
 		}
 		this.size++;
 	}
