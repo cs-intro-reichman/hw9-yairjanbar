@@ -59,7 +59,26 @@ public class MemorySpace {
 	 */
 	public int malloc(int length) {		
 		//// Replace the following statement with your code
-		return -1;
+		ListIterator iterator = new ListIterator(freeList.getFirst());
+		while (iterator.hasNext()) {
+			MemoryBlock blockIterator = iterator.current.block;
+			if (blockIterator.length >= length) { 
+				int Address = blockIterator.baseAddress;
+				MemoryBlock allocatedBlock = new MemoryBlock(Address, length);
+				allocatedList.addLast(allocatedBlock);
+				if (blockIterator.length == length) {
+					freeList.remove(blockIterator);
+				} else {
+					
+					blockIterator.baseAddress += length;
+					blockIterator.length -=length;
+				}
+				return Address; 
+			}
+			
+			iterator.next();
+		}
+		return -1; 
 	}
 
 	/**
@@ -72,6 +91,21 @@ public class MemorySpace {
 	 */
 	public void free(int address) {
 		//// Write your code here
+		if (allocatedList.getSize() == 0){
+            throw new IllegalArgumentException (
+                "index must be between 0 and size"
+                );
+        }
+        Node current = allocatedList.getFirst();
+        while (current != null) {
+            MemoryBlock allocatedBlock = current.block;
+            if (allocatedBlock.baseAddress == address) {
+                allocatedList.remove(current);
+                freeList.addLast(allocatedBlock);
+                return; 
+            }
+            current = current.next; 
+        }
 	}
 	
 	/**
@@ -89,5 +123,29 @@ public class MemorySpace {
 	 */
 	public void defrag() {
 		//// Write your code here
+        if (freeList.getFirst() == null) return;
+        ListIterator iteratorNum1 = new ListIterator(freeList.getFirst());
+        while (iteratorNum1.hasNext()) {
+            MemoryBlock blockNum1 = iteratorNum1.current.block;
+            ListIterator iteratorNum2 = new ListIterator(freeList.getFirst());
+            while (iteratorNum2.hasNext()) {
+                MemoryBlock blockNum2 = iteratorNum2.current.block;
+                if (blockNum1 != blockNum2) { 
+                    if (blockNum1.baseAddress + blockNum1.length == blockNum2.baseAddress) {
+                        blockNum1.length += blockNum2.length; 
+                        freeList.remove(iteratorNum2.current); 
+                        iteratorNum2 = new ListIterator(freeList.getFirst()); 
+                    }
+                    else if (blockNum2.baseAddress + blockNum2.length == blockNum1.baseAddress) {
+                        blockNum2.length += blockNum1.length; 
+                        freeList.remove(iteratorNum1.current); 
+                        iteratorNum1 = new ListIterator(freeList.getFirst()); 
+                        break; 
+                    }
+                }
+                iteratorNum2.next(); 
+            }
+            iteratorNum1.next(); 
+        }
 	}
 }
