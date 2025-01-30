@@ -124,7 +124,7 @@ public class MemorySpace {
     }
     
     /**
-     * A textual representation of the free list and the allocated list of this memory space, 
+     * A textual representation of the free list and the allocated list of this memory space, ,
      * for debugging purposes.
      */
         @Override
