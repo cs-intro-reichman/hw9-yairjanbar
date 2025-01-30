@@ -330,16 +330,12 @@ public class LinkedList {
 	 */
 	public String toString() {
 		//// Replace the following statement with your code
-		String s1 = "{";
-		Node currentNode = this.first;
-		for(int i =0;i<this.size-1;i++) {
-			s1 = s1 + currentNode.block + ",";
-			currentNode = currentNode.next;
+		String s1 = "";
+		Node cuurent = first;
+		while (cuurent != null) {
+			s1 += cuurent.block + " ";
+			cuurent = cuurent.next;
 		}
-		if (currentNode != null) { 
-			s1 = s1 + currentNode.block;
-		}
-		s1 = s1 + "}";
 		return s1;
 	}
 }
